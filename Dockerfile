@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         curl \
 		git \
         gnupg \
+        python3 \
+        python3-pip \
 		sudo \ 
         texlive-base \
         texlive-bibtex-extra \
@@ -48,6 +50,7 @@ COPY --chown=kali:kali ./karma.patch .
 COPY --chown=kali:kali ./package.patch .
 COPY --chown=kali:kali ./makefile .
 COPY --chown=kali:kali ./smoke.sh .
+COPY --chown=kali:kali ./script script
 
 #run patches
 RUN  patch karma.conf.js karma.patch
@@ -67,6 +70,9 @@ RUN git clone https://github.com/kalino7/datasets
 
 #make smoke.sh executeable
 RUN chmod +x smoke.sh
+
+# install python libraries
+RUN pip install pymongo python-dotenv requests
 
 #Build pdf report
 RUN make report
